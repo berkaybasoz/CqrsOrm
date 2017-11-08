@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Data;
 
-namespace CqrsOrm.Core.Repository
+namespace CqrsOrm.Core.UnitOfWork
 {
-    public interface IRepository : IDisposable
+    public interface IUnitOfWork : IDisposable
     {
         IDbConnection Connection { get; }
         T Transaction<T>(Func<IDbTransaction, T> query);

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CqrsOrm.ConsoleSample.Queries
 {
-    class GetSuppliersByCommonName : IQuery<IList<Suppliers>>
+    public class GetSuppliersByCommonName : IQuery<IList<Supplier>>
     {
         private readonly string _country;
 
@@ -18,9 +18,9 @@ namespace CqrsOrm.ConsoleSample.Queries
             _country = country;
         }
 
-        public IList<Suppliers> Execute(IConnection connection)
+        public IList<Supplier> Execute(IConnection connection)
         {
-            return connection.Query<Suppliers>("SELECT * FROM Suppliers WHERE Country = @Country", new { Country = _country }).ToList();
+            return connection.Query<Supplier>("SELECT * FROM Suppliers WHERE Country = @Country", new { Country = _country }).ToList();
         }
     }
 }

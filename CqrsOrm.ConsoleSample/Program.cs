@@ -1,14 +1,17 @@
 ﻿
 using CqrsOrm.ConsoleSample.Model;
 using CqrsOrm.ConsoleSample.Service;
+using CqrsOrm.Core.Command;
 using CqrsOrm.Core.Connection;
 using CqrsOrm.Core.Context;
 using CqrsOrm.Core.Context.Context;
+using CqrsOrm.Core.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
 
 namespace CqrsOrm.ConsoleSample
 {
@@ -16,7 +19,11 @@ namespace CqrsOrm.ConsoleSample
     {
         static void Main(string[] args)
         {
-            SampleDapperConsoleApp app = new SampleDapperConsoleApp();
+            SampleDapperApp app = new SampleDapperApp();
+            app.DeleteSuppliers();
+            app.DisplayLine();
+            app.SaveSuppliers();
+            app.DisplayLine();
             app.GetSuppliers();
             app.DisplayLine();
             app.GetSuppliersByCountry();
@@ -25,60 +32,66 @@ namespace CqrsOrm.ConsoleSample
             app.DisplayLine();
             app.GetSuppliers();
             app.DisplayLine();
-            app.Stop();
+            app.Wait();
         }
 
-        public class SampleDapperConsoleApp
+        public class SampleDapperApp
         {
-            private IContext _context;
-            private IConnection _connection;
-            private SuppliersService _service;
-            public SampleDapperConsoleApp()
+            private IContext context;
+            private IConnection connection;
+            private AbsSuppliersService service;
+            private string connectionString = @"data source=(LocalDB)\MSSQLLocalDB;attachdbfilename=|DataDirectory|\App_Data\Suppliers.mdf;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework";
+            public SampleDapperApp()
             {
-                string connectionString = @"Server=.\SQLEXPRESS;Database=NORTHWND;Trusted_Connection=True;";
-                _connection = new DapperConnection(connectionString);
-                _context = new ContextBase(_connection);
-                _service = new SuppliersService(_context);
+                connection = new DapperConnection(connectionString);
+                context = new ContextBase(connection);
+                service = new SupplierService(context);
             }
 
             public void GetSuppliers()
             {
-                IEnumerable<Suppliers> suppliers = _service.GetAllSuppliers();
+                IEnumerable<Supplier> suppliers = service.GetAllSuppliers();
                 DisplaySuppliers(suppliers);
             }
 
             public void GetSuppliersByCountry()
             {
-                IEnumerable<Suppliers> suppliers = _service.GetSuppliersByCountry("USA");
+                IEnumerable<Supplier> suppliers = service.GetSuppliersByCountry(Country.Turkey.ToString());
                 DisplaySuppliers(suppliers);
             }
 
             public void SaveSuppliers()
             {
-                Suppliers suppliers = new Suppliers
+                Supplier suppliers = new Supplier
                 {
                     CompanyName = "Deneme " + new Random().Next(1, 1000),
-                    Country = "USA"
+                    Country = Country.Turkey,
+                    ContactName = "Berkay Başöz" + new Random().Next(1, 1000)
                 };
 
-                _service.SaveSuppliers(suppliers);
+                service.SaveSupplier(suppliers);
 
             }
 
-            private void DisplaySuppliers(IEnumerable<Suppliers> suppliers)
+            public void DeleteSuppliers()
+            {
+                service.DeleteSuppliers();
+            }
+
+            public void DisplaySuppliers(IEnumerable<Supplier> suppliers)
             {
                 foreach (var supplier in suppliers)
                 {
-                    Console.WriteLine($"ID {supplier.SupplierID} company {supplier.CompanyName} contact {supplier.ContactName}");
+                    Console.WriteLine($"Id {supplier.SupplierId} company {supplier.CompanyName} contact {supplier.ContactName}");
                 }
             }
 
             public void DisplayLine()
             {
-                Console.WriteLine($"-----------------------------------"); 
+                Console.WriteLine($"-----------------------------------");
             }
 
-            public void Stop()
+            public void Wait()
             {
                 Console.ReadLine();
             }

@@ -1,15 +1,17 @@
 ﻿
+using System;
+using System.Collections.Generic;
 using CqrsOrm.Core.Command;
 using CqrsOrm.Core.Connection;
-using CqrsOrm.Core.Query; 
+using CqrsOrm.Core.Query;
 
 namespace CqrsOrm.Core.Context.Context
 {
     public class ContextBase : IContext
-    { 
-        private IConnection _connection { get; set; }
+    {
+        private IConnection _connection { get; set; } 
 
-        public ContextBase(IConnection connection)
+        public ContextBase(IConnection  connection)
         {
             _connection = connection;
         }

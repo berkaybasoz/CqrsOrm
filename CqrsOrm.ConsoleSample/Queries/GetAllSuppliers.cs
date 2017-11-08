@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace CqrsOrm.ConsoleSample.Queries
 {
-    class GetAllSuppliers : IQuery<IList<Suppliers>>
+    public class GetAllSuppliers : IQuery<IList<Supplier>>
     {
-        public IList<Suppliers> Execute(IConnection connection)
+        public IList<Supplier> Execute(IConnection connection)
         {
-            return connection.Query<Suppliers>("SELECT * FROM Suppliers order by SupplierID asc").ToList();
+            return connection.Query<Supplier>("SELECT * FROM Suppliers order by SupplierID asc").ToList();
         }
     }
 }

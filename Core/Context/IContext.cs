@@ -1,7 +1,8 @@
 ﻿using CqrsOrm.Core.Command;
 using CqrsOrm.Core.Query;
+using System.Collections.Generic;
 
-namespace CqrsOrm.Core.Context 
+namespace CqrsOrm.Core.Context
 {
     public interface IContext
     {

@@ -1,16 +1,16 @@
-﻿using CqrsOrm.Core.Repository;
+﻿using CqrsOrm.Core.UnitOfWork;
 using System;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace CqrsOrm.Core.Repository
+namespace CqrsOrm.Core.UnitOFWork
 {
-    public class DapperRepository : IRepository
+    public class DapperUnitOfWork : IUnitOfWork
     {
         private readonly string _connectionString;
         private IDbConnection _connection;
 
-        public DapperRepository(string connectionString)
+        public DapperUnitOfWork(string connectionString)
         {
             _connectionString = connectionString;
         }

@@ -23,6 +23,7 @@ namespace CqrsOrm.ConsoleSample
         Spain,
         Sweden,
         UK,
-        USA
+        USA,
+        Turkey
     }
 }

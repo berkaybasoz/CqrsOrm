@@ -1,4 +1,5 @@
-﻿using CqrsOrm.Core.Repository;
+﻿using CqrsOrm.Core.UnitOfWork;
+using CqrsOrm.Core.UnitOFWork;
 using Dapper;
 using System;
 using System.Collections.Generic;
@@ -10,14 +11,14 @@ namespace CqrsOrm.Core.Connection
 { 
    public class DapperConnection : IConnection
     {
-        private readonly IRepository _context;
+        private readonly IUnitOfWork _context;
 
         public DapperConnection(string connectionString)
         {
-            _context = new DapperRepository(connectionString);
+            _context = new DapperUnitOfWork(connectionString);
         }
 
-        public DapperConnection(DapperRepository context)
+        public DapperConnection(DapperUnitOfWork context)
         {
             _context = context;
         }
